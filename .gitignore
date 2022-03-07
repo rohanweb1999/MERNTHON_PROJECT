@@ -1,0 +1,6 @@
+/node_modules
+.config.env
+client/node_modules
+client/package-lock
+server/node_modules
+server/package-lock

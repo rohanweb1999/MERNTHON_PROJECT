@@ -1,0 +1,300 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  height: 100vh;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
+.HomeImg {
+  width: 100%;
+  height: 100vh;
+  opacity: 50%;
+  position: absolute;
+}
+.box {
+  padding-top: 10%;
+  margin: auto;
+  width: 50%;
+  height: 50%;
+  border-radius: 3px;
+  opacity: 100%;
+}
+.loginBox {
+  background: linear-gradient(#63cfe2, #3f8ecf);
+  width: 30%;
+  text-align: center;
+  position: relative;
+  left: 50%;
+  transform: translate(-50%, 20%);
+  box-shadow: 0 0 20px 2px rgba(0, 0, 0, 0.4);
+}
+.signupUser {
+  margin: auto;
+  margin-top: 100px;
+  padding-top: 30px;
+  width: 500px;
+  height: 100%;
+  display: grid;
+  padding-bottom: 10px;
+}
+.signupImg {
+  width: 100%;
+  height: 100vh;
+  opacity: 80%;
+  position: absolute;
+}
+
+.Bottom-class {
+  padding-top: 15px;
+  display: flex;
+  margin: auto;
+}
+.error {
+  color: #ec2f16;
+  font-size: small;
+  display: flex;
+}
+.last-div {
+  margin-right: 65%;
+}
+.profileImg {
+  margin: auto;
+  padding-top: 5px;
+}
+.navButton {
+  padding-left: 50px;
+}
+.PublicBlogs {
+  background-color: #ec2f16;
+}
+.mainWrapper {
+  background-color: #e1eff3;
+  margin: auto;
+  width: 30%;
+  padding: 10px;
+  margin-top: 5%;
+  box-shadow: 0px 0px 20px 0px;
+  height: 800px;
+}
+.subWrapper {
+  justify-content: center;
+  margin-top: 10px;
+  display: flex;
+}
+.postButton {
+  margin-top: 20%;
+  margin-left: 40%;
+}
+.title {
+  width: 80%;
+  height: 50px;
+  font-size: larger;
+  font-style: oblique;
+  font-weight: 500;
+}
+.Description {
+  font-size: larger;
+  font-style: oblique;
+  font-weight: 500;
+  height: 100px;
+  width: 80%;
+}
+.loginName {
+  margin-right: 40%;
+}
+.myBlogSubDiv {
+  background-color: white;
+  margin-left: 20px;
+  margin-top: 20px;
+  width: 20%;
+  height: 45rem;
+  border-radius: 15px 15px 15px 15px;
+  box-shadow: 0px 1px 7px 0px;
+  display: inline-block;
+}
+.articalBannerImg {
+  width: 100%;
+  height: 22vh;
+  background-position: 40% 10%;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+.titleBlogDiv {
+  display: inline-block;
+  margin-bottom: 0px;
+  padding: 6px 16px;
+  border-radius: 20px;
+  background-color: rgba(254, 164, 98, 0.2);
+  color: #fea462;
+  font-size: 13px;
+  line-height: 14px;
+  font-weight: 700;
+  text-decoration: none;
+}
+.descriptionView {
+  display: block;
+  margin-top: 12px;
+  color: #0d1536;
+  font-size: 18px;
+  font-weight: 700;
+  text-decoration: none;
+}
+.categoryViewDiv {
+  width: 200px;
+  height: 25px;
+  border-radius: 15px;
+  background-color: khaki;
+  margin-left: 10px;
+  margin-top: auto;
+}
+.cardmaindiv {
+  display: grid;
+  grid-template-columns: auto auto auto;
+  padding: 10px;
+}
+.cardBox {
+  margin-top: 10%;
+  background-color: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(98, 98, 98, 0.8);
+  padding: 20px;
+  font-size: 30px;
+  text-align: center;
+  margin: auto;
+  display: grid;
+  position: relative;
+}
+.css-1ri6ub7-MuiPaper-root-MuiCard-root {
+  box-shadow: 0px 2px 1px -1px rgb(0 0 0 / 20%),
+    0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%);
+  overflow: hidden;
+  max-width: 345px;
+  margin-top: 10%;
+}
+.EditDeleteButton {
+  padding-top: 50px;
+}
+
+.profilePictureMainDiv {
+  margin: auto;
+}
+.css-1wlk0hk-MuiAvatar-root {
+  position: relative;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+  width: 100px;
+  height: 100px;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  font-size: 1.25rem;
+  line-height: 1;
+  border-radius: 50%;
+  overflow: hidden;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+.loginAuthenticateUserprofilePhoto {
+  padding: 15px 15px 15px 15px;
+}
+.likesView {
+  display: flex;
+}
+.AddCommentBox {
+  padding-top: 10px;
+  margin-left: 5px;
+  display: flex;
+}
+.likeButton {
+  height: 55px;
+}
+.pagination {
+  justify-content: center;
+  margin-top: 10px;
+  display: flex;
+}
+.checkBox {
+  display: flex;
+  font-size: larger;
+}
+.checkBoxsubDiv {
+  margin: 5px;
+}
+
+input[type="checkbox" i] {
+  background-color: initial;
+  cursor: default;
+  appearance: auto;
+  box-sizing: border-box;
+  border: initial;
+  width: 20px;
+  height: 20px;
+}
+.NavBarButtons {
+  display: flex;
+}
+.menu {
+  display: inline;
+}
+.userImg {
+  border-radius: 20%;
+}
+#profileImg {
+  margin-right: 10px;
+  width: 60px;
+  height: 60px;
+}
+.editProfileTextDiv {
+  margin-top: 5%;
+  display: flex;
+  font-size: larger;
+}
+#firstName {
+  margin-left: 10px;
+  padding-top: 1px;
+  font-size: x-large;
+  width: 200px;
+}
+#lastName {
+  margin-left: 10px;
+  padding-top: 1px;
+  font-size: x-large;
+  width: 200px;
+}
+#email {
+  margin-left: 10px;
+  padding-top: 1px;
+  font-size: x-large;
+  width: 500px;
+}
+#Username {
+  margin-left: 10px;
+  padding-top: 1px;
+  font-size: x-large;
+  width: 200px;
+}
+#contact {
+  margin-left: 10px;
+  padding-top: 1px;
+  font-size: x-large;
+  width: 200px;
+}
