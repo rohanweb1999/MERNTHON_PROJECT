@@ -5,7 +5,8 @@
 import Axios from 'axios';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { ADD_COMMENT, CHANGE_PASSWORD, CHECK_EMAIL_EXIST, CREATE_BLOCK, CREATE_BLOG, DELETE_PERSONAL_BLOG, EDIT_AND_UPDATE_PERSONAL_BLOG, GET_BLOGS_COMMENTS, GET_LIKES, GET_LOGIN_USER_DETAILS, GET_PUBLIC_BLOGS, GET_SEARCH_BLOGS, LIKE_BLOG, LOADER, LOGIN_USER, LOGOUT_USER, SEARCH_VALUE, SIGNUP_USER_DATA, UNLIKE_BLOG, UPDATE_USER_PROFILE, UPLOAD_ARTICAL_BANNER, UPLOAD_PROFILE_PICTURE } from './Type';
+import { bindActionCreators } from 'redux';
+import { ADD_COMMENT, ADD_GENRES, CHANGE_PASSWORD, CHECK_EMAIL_EXIST, CREATE_BLOCK, CREATE_BLOG, DELETE_GENRES, DELETE_PERSONAL_BLOG, EDIT_AND_UPDATE_PERSONAL_BLOG, GET_BLOGS_COMMENTS, GET_GENRES, GET_LIKES, GET_LOGIN_USER_DETAILS, GET_PUBLIC_BLOGS, GET_SEARCH_BLOGS, LIKE_BLOG, LOADER, LOGIN_USER, LOGOUT_USER, SEARCH_VALUE, SIGNUP_USER_DATA, UNLIKE_BLOG, UPDATE_USER_PROFILE, UPLOAD_ARTICAL_BANNER, UPLOAD_PROFILE_PICTURE } from './Type';
 toast.configure()
 ///////////////////// load modules end ///////////////////////////////////////
 
@@ -66,6 +67,49 @@ export const changePassword = (id, values) => {
 
             })
     }
+}
+export const addGenres = (genresData) => {
+    return (dispatch) => {
+        Axios.post('/addGenres', genresData)
+            .then((res) => {
+                const result = res.data
+                toast.success(result, { position: toast.POSITION.TOP_CENTER, autoClose: 2000 });
+                dispatch({ type: ADD_GENRES })
+            })
+            .catch(err => {
+                toast.error("Failed", { position: toast.POSITION.TOP_CENTER, autoClose: 2000 })
+
+            })
+    }
+}
+export const getGenres = (pageNumber) => {
+    return (dispatch) => {
+        Axios.get(`/getGenres/?Page=${pageNumber}`)
+            .then((res) => {
+
+                dispatch({ type: GET_GENRES, payload: res.data })
+            })
+            .catch(err => {
+                toast.error("Failed", { position: toast.POSITION.TOP_CENTER, autoClose: 2000 })
+
+            })
+    }
+}
+export const deleteGenres = (id) => {
+    return (
+        (dispatch) => {
+            if (window.confirm("Are you Sure delete this Genres")) {
+                Axios.delete(`/deleteGenres/${id}`)
+                    .then((res) => {
+                        toast.success(res.data.msg, { position: toast.POSITION.TOP_CENTER, autoClose: 2000 })
+                        dispatch({ type: DELETE_GENRES })
+                    })
+                    .catch(err => {
+                    });
+            }
+
+        }
+    )
 }
 
 export const profileImageUpload = (profilePicture, email) => {

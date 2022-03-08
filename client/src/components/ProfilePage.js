@@ -67,8 +67,6 @@ const ProfilePage = () => {
                         id="firstName"
                         name="firstName"
                         type="text"
-                        // onChange={formik.handleChange}
-                        // value={formik.values.firstName}
                         {...formik.getFieldProps("firstName")}
                     />
                     <label>Lastname: -</label>

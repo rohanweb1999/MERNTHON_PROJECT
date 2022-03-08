@@ -11,6 +11,8 @@ import ArticalsPage from './components/ArticalsPage'
 import PageNotFound from './components/PageNotFound'
 import ProfilePage from './components/ProfilePage'
 import ChangePassword from './components/ChangePassword'
+import ListGenres from './components/ListGenres'
+import CreateGenres from './components/CreateGenres'
 import {
   Route,
   Switch,
@@ -42,6 +44,9 @@ const App = () => {
         <ProtectedRoute exact path="/myBlogs" component={MyBlogPage} authStatus={cookie} />
         <ProtectedRoute exact path="/profile" component={ProfilePage} authStatus={cookie} />
         <ProtectedRoute exact path="/changepwd" component={ChangePassword} authStatus={cookie} />
+        <ProtectedRoute exact path="/genres" component={ListGenres} authStatus={cookie} />
+        <ProtectedRoute exact path="/createGenres" component={CreateGenres} authStatus={cookie} />
+
 
 
         {

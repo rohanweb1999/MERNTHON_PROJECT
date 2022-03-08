@@ -8,7 +8,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require("jsonwebtoken");
 const authenticate = require("../middleware/authenticate");
 const User = require('../models/userSchema');
-// const Comment = require('../models/commentsSchema');
+const Genres = require('../models/genresSchema')
 require('../db/conn');
 const upload = require('../multer')
 const cloudinary = require('../cloudinary')
@@ -84,32 +84,7 @@ router.put('/updateUser/:id/:email', async (req, res) => {
         );
 
         res.json({ msg: "Profile Update SuccessFully" })
-        // if (updatedValue.email !== email) {
-        //     const emailExist = await User.findOne({ email: updatedValue.email });
 
-        //     if (emailExist) {
-        //         return res.status(400).send({ error: "This Email is already taken" });
-        //     }
-        //     else {
-        //         const result = await User.findByIdAndUpdate(id, updatedValue,
-        //             {
-        //                 new: false
-        //             },
-        //         );
-
-        //         res.json({ msg: "Profile Update SuccessFully" })
-        //     }
-        // }
-        // else {
-
-        //     await User.findByIdAndUpdate(id, updatedValue,
-        //         {
-        //             new: false
-        //         },
-        //     );
-
-        //     res.json({ msg: "Profile Update SuccessFully" })
-        // }
 
         console.log("result", result);
     }
@@ -144,31 +119,64 @@ router.put('/changePassword/:id', async (req, res) => {
 
             }
         }
-
-        // if (userLogin) {
-        //     const isMatch = await bcrypt.compare(password, userLogin.password);
-        //     if (!isMatch) {
-        //         res.status(400).send({ error: "Invalid Credientials!" });
-        //     }
-        //     else {
-        //         token = await userLogin.generateAuthToken();
-        //         console.log("token", token);
-        //         res.cookie("jwt", token, {
-        //             expires: new Date(Date.now() + 3600000),
-
-        //         });
-        //         res.send({ msg: "User Login Successfully!" });
-        //     }
-        // }
-        // else {
-
-        //     res.status(400).send({ error: "Invalid Credientials!" });
-        // }
     } catch (err) {
         res.send(err)
     }
 })
 
+
+router.post('/addGenres', authenticate, async (req, res) => {
+
+    const genres = req.body
+    try {
+
+        const result = await Genres(genres).save();
+        res.send("Genres Publised")
+
+
+    }
+    catch (err) {
+        res.send("error" + err)
+    };
+})
+router.get('/getGenres', authenticate, async (req, res) => {
+
+    try {
+        const page = req.query.Page
+        let limit = 5
+        let skip = (page - 1) * limit;
+
+        aggregateQuery = [
+            { $sort: { title: 1 } },
+            {
+                $skip: skip
+            },
+            {
+                $limit: limit
+            }
+        ]
+        const matchUser = await Genres.aggregate([{ $sort: { title: 1 } }]);
+        let totalPage = Math.ceil(matchUser.length / limit);
+        const genres = await Genres.aggregate(aggregateQuery)
+        res.send({ genres, totalPage })
+    }
+    catch (err) {
+        res.send("error" + err)
+    };
+})
+router.delete('/deleteGenres/:id', authenticate, async (req, res) => {
+
+    try {
+
+        await Genres.findByIdAndDelete(req.params.id)
+        res.send({ msg: "Genres Deleted Successfully" })
+
+    }
+    catch (err) {
+        res.send("error" + err)
+    };
+});
+//////////////////////////// ***********************************/////////////////////////////
 router.post('/uploadProfilePicture/:email', upload.single('profilePicture'), async (req, res) => {
 
     try {

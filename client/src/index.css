@@ -232,6 +232,9 @@ code {
   margin-top: 10px;
   display: flex;
 }
+#pagination {
+  margin-top: auto;
+}
 .checkBox {
   display: flex;
   font-size: larger;
@@ -321,4 +324,39 @@ input[type="checkbox" i] {
   padding-top: 1px;
   font-size: x-large;
   width: 200px;
+}
+#title {
+  padding: 10%;
+  width: 100%;
+  border: 1px black solid;
+  border-radius: 5px;
+}
+#description {
+  padding: 10%;
+  width: 100%;
+  border: 1px black solid;
+  border-radius: 5px;
+}
+.cardForGenres {
+  background-color: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(98, 98, 98, 0.8);
+  padding: 20px;
+  margin: auto;
+  position: relative;
+}
+.css-b6lsxj-MuiButtonBase-root-MuiCardActionArea-root {
+  background-color: white;
+}
+.mainCardDiv {
+  display: flex;
+  margin: 50px;
+  font-size: 30px;
+  text-align: center;
+}
+.css-1aczowp-MuiButtonBase-root-MuiPaginationItem-root.Mui-selected {
+  color: #000000;
+  border: 1px solid rgb(218 0 255 / 50%);
+  width: 50px;
+  height: 50px;
+  background-color: rgb(217, 0, 255);
 }

@@ -148,14 +148,14 @@ const Navbar = () => {
 
               <div className='NavBarButtons'>
                 <div className='navButton'>
-                  <NavLink to='/myBlogs'><Button variant="contained" className='MyArticals' color='success'>HOME</Button></NavLink>
+                  <Button variant="contained" className='MyArticals' color='success'>HOME</Button>
 
                 </div>
                 <div className='navButton'>
-                  <NavLink to='/articals'><Button variant="contained" className='MyArticals' color='success'>ARTISTS</Button></NavLink>
+                  <Button variant="contained" className='MyArticals' color='success'>ARTISTS</Button>
                 </div>
                 <div className='navButton'>
-                  <NavLink to='/articals'><Button variant="contained" className='MyArticals' color='success'>GENRES</Button></NavLink>
+                  <Button variant="contained" className='MyArticals' color='success'>GENRES</Button>
                 </div>
               </div>
               <div className={classes.grow} />
@@ -198,7 +198,7 @@ const Navbar = () => {
                         <div className='menu'>
                           <Typography textAlign="center" >Dashboard</Typography>
                           <Typography textAlign="center" >Artists</Typography>
-                          <Typography textAlign="center" >Genres</Typography>
+                          <NavLink to="/genres"><Typography textAlign="center" >Genres</Typography></NavLink>
                           <NavLink to="/profile"><Typography textAlign="center" >Profile</Typography></NavLink>
                           <NavLink to="/changepwd"><Typography textAlign="center" >Change Password</Typography></NavLink>
                           <Typography textAlign="center" onClick={logout}>Logout</Typography>
