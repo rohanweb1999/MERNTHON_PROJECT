@@ -1,22 +1,28 @@
 import React from 'react'
+import { useHistory } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import { useDispatch, useSelector } from 'react-redux';
 import PublishIcon from '@mui/icons-material/Publish';
 import { TextField } from "@material-ui/core";
 import { useState } from 'react';
-import { addGenres, changePassword, getLoginUserDetails, updateUserProfile } from '../actions';
+import { addGenres, updateGenres } from '../actions';
 import * as Yup from 'yup'
 import { useFormik } from "formik";
 import { useEffect } from 'react';
 import Box from '@mui/material/Box';
+import queryString from 'query-string';
+
 
 const CreateGenres = () => {
 
-
-
-
-
     const dispatch = useDispatch()
+    const history = useHistory()
+    const [editedData, seteditedData] = useState([])  //Here Edited Data store
+    const toggle = useSelector(state => state.blogUserReducer.toggle)
+
+    const genres = useSelector(state => state.blogUserReducer.genres)
+    const { id } = queryString.parse(window.location.search)
+
     const validationSchema = Yup.object().shape({
         title: Yup.string()
             .max(100, 'Title to long it shoud be less then 100 characters')
@@ -35,15 +41,41 @@ const CreateGenres = () => {
         initialValues,
         validationSchema,
         onSubmit: (values) => {
-            dispatch(addGenres(values))
+            if (id) {
+                dispatch(updateGenres(id, values))
+
+            } else {
+                dispatch(addGenres(values))
+
+            }
         }
     });
+    useEffect(() => {
+        if (id && editedData) {
+            formik.setValues(editedData)
 
-
+        }
+    }, [editedData])
+    useEffect(() => {
+        if (id) {
+            const editGenresData = genres.find((ele) => ele._id === id ? ele : null);
+            seteditedData(editGenresData);
+        }
+    }, [id]);
+    useEffect(() => {
+        if (toggle === true) {
+            history.push('/genres');
+        }
+    }, [toggle]);
     return (
 
         <div className='mainWrapper'>
-            <h2>Add Genres</h2>
+            {
+                id ?
+                    <h2>UPDATE GENRES</h2> :
+                    <h2>ADD GENRES</h2>
+
+            }
             <form onSubmit={formik.handleSubmit}>
 
                 <div className='changePassword'>
@@ -55,7 +87,6 @@ const CreateGenres = () => {
                         name="title"
                         type="text"
                         onChange={formik.handleChange}
-                        // value={formik.values.password}
                         {...formik.getFieldProps("title")}
 
                     />
@@ -89,12 +120,21 @@ const CreateGenres = () => {
 
 
                     <div className='postButton'>
-                        <Button
-                            type='submit'
-                            variant="contained" color="success"
-                            endIcon={<PublishIcon />} >
-                            SUBMIT
-                        </Button>
+                        {
+                            id ? <Button
+                                type='submit'
+                                variant="contained" color="success"
+                                endIcon={<PublishIcon />} >
+                                UPDATE
+                            </Button>
+                                : <Button
+                                    type='submit'
+                                    variant="contained" color="success"
+                                    endIcon={<PublishIcon />} >
+                                    SUBMIT
+                                </Button>
+                        }
+
                     </div>
 
                 </div>

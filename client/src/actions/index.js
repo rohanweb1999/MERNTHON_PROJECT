@@ -6,7 +6,7 @@ import Axios from 'axios';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { bindActionCreators } from 'redux';
-import { ADD_COMMENT, ADD_GENRES, CHANGE_PASSWORD, CHECK_EMAIL_EXIST, CREATE_BLOCK, CREATE_BLOG, DELETE_GENRES, DELETE_PERSONAL_BLOG, EDIT_AND_UPDATE_PERSONAL_BLOG, GET_BLOGS_COMMENTS, GET_GENRES, GET_LIKES, GET_LOGIN_USER_DETAILS, GET_PUBLIC_BLOGS, GET_SEARCH_BLOGS, LIKE_BLOG, LOADER, LOGIN_USER, LOGOUT_USER, SEARCH_VALUE, SIGNUP_USER_DATA, UNLIKE_BLOG, UPDATE_USER_PROFILE, UPLOAD_ARTICAL_BANNER, UPLOAD_PROFILE_PICTURE } from './Type';
+import { ADD_COMMENT, ADD_GENRES, CHANGE_PASSWORD, CHECK_EMAIL_EXIST, CREATE_BLOCK, CREATE_BLOG, DELETE_GENRES, DELETE_PERSONAL_BLOG, EDIT_AND_UPDATE_PERSONAL_BLOG, GET_BLOGS_COMMENTS, GET_GENRES, GET_LIKES, GET_LOGIN_USER_DETAILS, GET_PUBLIC_BLOGS, GET_SEARCH_BLOGS, LIKE_BLOG, LOADER, LOGIN_USER, LOGOUT_USER, SEARCH_VALUE, SIGNUP_USER_DATA, UNLIKE_BLOG, UPDATE_GENRES, UPDATE_USER_PROFILE, UPLOAD_ARTICAL_BANNER, UPLOAD_PROFILE_PICTURE } from './Type';
 toast.configure()
 ///////////////////// load modules end ///////////////////////////////////////
 
@@ -108,6 +108,21 @@ export const deleteGenres = (id) => {
                     });
             }
 
+        }
+    )
+}
+export const updateGenres = (id, data) => {
+    return (
+        (dispatch) => {
+            Axios.put(`/updateGenres/${id}`, data)
+                .then((res) => {
+                    toast.success("Genres Update Successfully", { position: toast.POSITION.TOP_CENTER, autoClose: 2000 })
+
+                    dispatch({ type: UPDATE_GENRES })
+                })
+                .catch(err => {
+
+                })
         }
     )
 }

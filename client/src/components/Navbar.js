@@ -196,11 +196,19 @@ const Navbar = () => {
 
                       <MenuItem onClick={handleCloseUserMenu}>
                         <div className='menu'>
-                          <Typography textAlign="center" >Dashboard</Typography>
+
                           <Typography textAlign="center" >Artists</Typography>
-                          <NavLink to="/genres"><Typography textAlign="center" >Genres</Typography></NavLink>
+                          {
+                            loginAuthenticateUser.roll === "admin" ? (
+                              <>
+                                <Typography textAlign="center" >Dashboard</Typography>
+                                <NavLink to="/changepwd"><Typography textAlign="center" >Change Password</Typography></NavLink>
+                              </>)
+                              : null
+
+                          }
+                          <NavLink to="/admingenres"><Typography textAlign="center" >Genres</Typography></NavLink>
                           <NavLink to="/profile"><Typography textAlign="center" >Profile</Typography></NavLink>
-                          <NavLink to="/changepwd"><Typography textAlign="center" >Change Password</Typography></NavLink>
                           <Typography textAlign="center" onClick={logout}>Logout</Typography>
                         </div>
                       </MenuItem>

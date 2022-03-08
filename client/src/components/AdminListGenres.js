@@ -2,7 +2,7 @@ import { Button } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { NavLink } from 'react-router-dom'
-import { getGenres } from '../actions'
+import { deleteGenres, getGenres, getLoginUserDetails } from '../actions'
 import genresBg from '../assets/genres.jpg';
 import Pagination from '@mui/material/Pagination';
 
@@ -22,35 +22,36 @@ const ListGenres = () => {
 
     console.log("genres", genres);
 
-    const deleteGenres = (id) => {
-        console.log("id", id);
+    const handleDelete = (id) => {
         dispatch(deleteGenres(id))
     }
 
     useEffect(() => {
         dispatch(getGenres(pageNumber))
     }, [pageNumber, toggle])
+    useEffect(() => {
+        dispatch(getLoginUserDetails())
+    }, [])
     return (
         <div className='listGenresMainDiv'>
             <div className='slide-image'>
                 <img className='HomeImg' src={genresBg} alt='jpg'></img>
                 <NavLink to="/createGenres"><Button variant="contained" color="error">Add Genres</Button></NavLink>
                 <div className='mainCardDiv'>
-
                     {
-                        genres && genres.map(list => {
+                        genres && genres.map((list) => {
                             return (
                                 <>
-                                    <div className='cardBox' key={list._id}>
+                                    <div className='cardBox'>
                                         <div>
-                                            <h4>{list.title}</h4>
+                                            <h3>{list.title}</h3>
                                         </div>
                                         <div>
-                                            <h4>{list.description}</h4>
+                                            <p>{list.description}</p>
                                         </div>
                                         <div className='EditDeleteButton'>
                                             <NavLink to={`/editgenres/:?id=${list._id}`}><Button color="secondary" >Edit </Button></NavLink>
-                                            <Button color='error' onClick={() => deleteGenres(list._id)}>Delete  </Button>
+                                            <Button type='submit' color='error' onClick={() => handleDelete(list._id)}>Delete  </Button>
                                         </div>
                                     </div>
                                 </>

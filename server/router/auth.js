@@ -98,9 +98,6 @@ router.put('/changePassword/:id', async (req, res) => {
         console.log(req.params.id);
 
         const { oldPassword, password, confirmPassword } = req.body;
-
-
-
         const userLogin = await User.findOne({ _id: req.params.id });
         if (userLogin) {
             const isMatch = await bcrypt.compare(oldPassword, userLogin.password)
@@ -170,6 +167,25 @@ router.delete('/deleteGenres/:id', authenticate, async (req, res) => {
 
         await Genres.findByIdAndDelete(req.params.id)
         res.send({ msg: "Genres Deleted Successfully" })
+
+    }
+    catch (err) {
+        res.send("error" + err)
+    };
+});
+router.put('/updateGenres/:id', async (req, res) => {
+    try {
+        let id = req.params.id;
+        let updatedValue = req.body
+        console.log("updatedValue", updatedValue);
+
+        const result = await Genres.findByIdAndUpdate(id, updatedValue,
+            {
+                new: false
+            },
+        );
+
+        res.json({ msg: "Genres update Successfully" })
 
     }
     catch (err) {
