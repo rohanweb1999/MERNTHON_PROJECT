@@ -54,7 +54,6 @@ router.post('/signIn', async (req, res) => {
             else {
                 token = await userLogin.generateAuthToken();
                 console.log("token", token);
-
                 res.cookie("jwt", token, {
                     expires: new Date(Date.now() + 3600000),
 
@@ -76,39 +75,99 @@ router.put('/updateUser/:id/:email', async (req, res) => {
         let id = req.params.id;
         let email = req.params.email;
         let updatedValue = req.body
-        if (updatedValue.email !== email) {
-            const emailExist = await User.findOne({ email: updatedValue.email });
+        console.log("updatedValue", updatedValue);
 
-            if (emailExist) {
-                return res.status(400).send({ error: "This Email is already taken" });
-            }
-            else {
-                await User.findByIdAndUpdate(id, updatedValue,
-                    {
-                        new: false
-                    },
-                );
+        const result = await User.findByIdAndUpdate(id, updatedValue,
+            {
+                new: false
+            },
+        );
 
-                res.json({ msg: "Profile Update SuccessFully" })
-            }
-        }
-        else {
+        res.json({ msg: "Profile Update SuccessFully" })
+        // if (updatedValue.email !== email) {
+        //     const emailExist = await User.findOne({ email: updatedValue.email });
 
-            await User.findByIdAndUpdate(id, updatedValue,
-                {
-                    new: false
-                },
-            );
+        //     if (emailExist) {
+        //         return res.status(400).send({ error: "This Email is already taken" });
+        //     }
+        //     else {
+        //         const result = await User.findByIdAndUpdate(id, updatedValue,
+        //             {
+        //                 new: false
+        //             },
+        //         );
 
-            res.json({ msg: "Profile Update SuccessFully" })
-        }
+        //         res.json({ msg: "Profile Update SuccessFully" })
+        //     }
+        // }
+        // else {
 
+        //     await User.findByIdAndUpdate(id, updatedValue,
+        //         {
+        //             new: false
+        //         },
+        //     );
 
+        //     res.json({ msg: "Profile Update SuccessFully" })
+        // }
+
+        console.log("result", result);
     }
     catch (err) {
         res.send("error" + err)
     };
 });
+
+router.put('/changePassword/:id', async (req, res) => {
+    try {
+        console.log(req.params.id);
+
+        const { oldPassword, password, confirmPassword } = req.body;
+
+
+
+        const userLogin = await User.findOne({ _id: req.params.id });
+        if (userLogin) {
+            const isMatch = await bcrypt.compare(oldPassword, userLogin.password)
+            if (isMatch) {
+                const bcryptPass = await bcrypt.hash(password, 10);
+                const bcryptCPass = await bcrypt.hash(confirmPassword, 10);
+                const result = await User.findByIdAndUpdate(req.params.id, { password: bcryptPass, confirmPassword: bcryptCPass },
+                    {
+                        new: false
+                    },
+                );
+                res.json({ msg: "Password Change SuccessFully" })
+            }
+            else {
+                res.status(400).send({ error: "Old Password did not match" });
+
+            }
+        }
+
+        // if (userLogin) {
+        //     const isMatch = await bcrypt.compare(password, userLogin.password);
+        //     if (!isMatch) {
+        //         res.status(400).send({ error: "Invalid Credientials!" });
+        //     }
+        //     else {
+        //         token = await userLogin.generateAuthToken();
+        //         console.log("token", token);
+        //         res.cookie("jwt", token, {
+        //             expires: new Date(Date.now() + 3600000),
+
+        //         });
+        //         res.send({ msg: "User Login Successfully!" });
+        //     }
+        // }
+        // else {
+
+        //     res.status(400).send({ error: "Invalid Credientials!" });
+        // }
+    } catch (err) {
+        res.send(err)
+    }
+})
 
 router.post('/uploadProfilePicture/:email', upload.single('profilePicture'), async (req, res) => {
 

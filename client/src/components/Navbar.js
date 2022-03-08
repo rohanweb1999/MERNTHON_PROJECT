@@ -200,7 +200,7 @@ const Navbar = () => {
                           <Typography textAlign="center" >Artists</Typography>
                           <Typography textAlign="center" >Genres</Typography>
                           <NavLink to="/profile"><Typography textAlign="center" >Profile</Typography></NavLink>
-                          <Typography textAlign="center" >Change Password</Typography>
+                          <NavLink to="/changepwd"><Typography textAlign="center" >Change Password</Typography></NavLink>
                           <Typography textAlign="center" onClick={logout}>Logout</Typography>
                         </div>
                       </MenuItem>

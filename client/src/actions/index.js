@@ -5,7 +5,7 @@
 import Axios from 'axios';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { ADD_COMMENT, CHECK_EMAIL_EXIST, CREATE_BLOCK, CREATE_BLOG, DELETE_PERSONAL_BLOG, EDIT_AND_UPDATE_PERSONAL_BLOG, GET_BLOGS_COMMENTS, GET_LIKES, GET_LOGIN_USER_DETAILS, GET_PUBLIC_BLOGS, GET_SEARCH_BLOGS, LIKE_BLOG, LOADER, LOGIN_USER, LOGOUT_USER, SEARCH_VALUE, SIGNUP_USER_DATA, UNLIKE_BLOG, UPDATE_USER_PROFILE, UPLOAD_ARTICAL_BANNER, UPLOAD_PROFILE_PICTURE } from './Type';
+import { ADD_COMMENT, CHANGE_PASSWORD, CHECK_EMAIL_EXIST, CREATE_BLOCK, CREATE_BLOG, DELETE_PERSONAL_BLOG, EDIT_AND_UPDATE_PERSONAL_BLOG, GET_BLOGS_COMMENTS, GET_LIKES, GET_LOGIN_USER_DETAILS, GET_PUBLIC_BLOGS, GET_SEARCH_BLOGS, LIKE_BLOG, LOADER, LOGIN_USER, LOGOUT_USER, SEARCH_VALUE, SIGNUP_USER_DATA, UNLIKE_BLOG, UPDATE_USER_PROFILE, UPLOAD_ARTICAL_BANNER, UPLOAD_PROFILE_PICTURE } from './Type';
 toast.configure()
 ///////////////////// load modules end ///////////////////////////////////////
 
@@ -39,12 +39,12 @@ export const userLogin = (data) => {
 }
 
 export const updateUserProfile = (id, email, data) => {
+    console.log("data", data);
     return (
         (dispatch) => {
             Axios.put(`/updateUser/${id}/${email}`, data)
                 .then((res) => {
-                    toast.success(res.msg, { position: toast.POSITION.TOP_CENTER, autoClose: 2000 })
-
+                    toast.success(res.data.msg, { position: toast.POSITION.TOP_CENTER, autoClose: 2000 })
                     dispatch({ type: UPDATE_USER_PROFILE })
                 })
                 .catch(err => {
@@ -52,6 +52,20 @@ export const updateUserProfile = (id, email, data) => {
                 })
         }
     )
+}
+
+export const changePassword = (id, values) => {
+    return (dispatch) => {
+        Axios.put(`/changePassword/${id}`, values)
+            .then((res) => {
+                toast.success(res.data.msg, { position: toast.POSITION.TOP_CENTER, autoClose: 2000 });
+                dispatch({ type: CHANGE_PASSWORD })
+            })
+            .catch(error => {
+                toast.error("Old Password did not match", { position: toast.POSITION.TOP_CENTER, autoClose: 2000 })
+
+            })
+    }
 }
 
 export const profileImageUpload = (profilePicture, email) => {
@@ -171,7 +185,7 @@ export const editAndUpdatePersonalBlog = (id, values, Banner) => {
                     dispatch({ type: EDIT_AND_UPDATE_PERSONAL_BLOG })
                 })
                 .catch(err => {
-                    toast.error("Some thing went wrong failed to update blog!!", { position: toast.POSITION.TOP_CENTER, autoClose: 2000 });
+                    toast.error("Some thing went wrong failed to update Profile!!", { position: toast.POSITION.TOP_CENTER, autoClose: 2000 });
                 });
 
 

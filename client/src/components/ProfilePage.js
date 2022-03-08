@@ -12,23 +12,11 @@ import { useEffect } from 'react';
 
 const ProfilePage = () => {
 
-    const [enable, setEnable] = useState(true);
-
-
 
 
     const dispatch = useDispatch()
     const loginAuthenticateUser = useSelector(state => state.blogUserReducer.loginAuthenticateUser)
-    // console.log("loginAuthenticateUser", loginAuthenticateUser._id);
-
-    const handleChangeEdit = () => {
-        setEnable(false)
-    }
-    const updateProfile = () => {
-        setEnable(true)
-        dispatch(updateUserProfile(loginAuthenticateUser._id, loginAuthenticateUser.email))
-
-    }
+    console.log("loginAuthenticateUser", loginAuthenticateUser);
     const validationSchema = Yup.object().shape({
         firstName: Yup.string()
             .max(30, 'Must be 30 characters or less')
@@ -52,13 +40,17 @@ const ProfilePage = () => {
         initialValues,
         validationSchema,
         onSubmit: (values) => {
-            console.log(values);
+            console.log("values", values);
             dispatch(updateUserProfile(loginAuthenticateUser._id, loginAuthenticateUser.email, values))
+            dispatch(getLoginUserDetails())
 
         }
     });
     useEffect(() => {
-        dispatch(getLoginUserDetails())
+        formik.setValues(loginAuthenticateUser)
+    }, [])
+    useEffect(() => {
+        // dispatch(getLoginUserDetails())
     }, [])
     return (
 
@@ -72,13 +64,12 @@ const ProfilePage = () => {
                     <label>Firstname: -</label>
                     <TextField
                         variant="standard"
-                        id='firstName'
-                        className='firstName'
+                        id="firstName"
                         name="firstName"
                         type="text"
-                        disabled={enable}
+                        // onChange={formik.handleChange}
+                        // value={formik.values.firstName}
                         {...formik.getFieldProps("firstName")}
-                        value={enable === false ? null : loginAuthenticateUser.firstName}
                     />
                     <label>Lastname: -</label>
                     <TextField
@@ -86,10 +77,8 @@ const ProfilePage = () => {
                         id='lastName'
                         name="firstName"
                         type="text"
-                        disabled={enable}
+                        disabled={false}
                         {...formik.getFieldProps("lastName")}
-
-                        value={enable === false ? null : loginAuthenticateUser.lastName}
 
                     />
                 </div>
@@ -98,12 +87,11 @@ const ProfilePage = () => {
                     <TextField
                         variant="standard"
                         id='Username'
-
-                        name="firstName"
+                        name="userName"
                         type="text"
                         disabled={true}
+                        {...formik.getFieldProps("userName")}
 
-                        value={loginAuthenticateUser.userName}
                     />
                 </div>
                 <div className='editProfileTextDiv'>
@@ -111,11 +99,11 @@ const ProfilePage = () => {
                     <TextField
                         variant="standard"
                         id='email'
-
                         name="email"
                         type="text"
                         disabled={true}
-                        value={loginAuthenticateUser.email}
+                        {...formik.getFieldProps("email")}
+
                     />
                 </div>
                 <div className='editProfileTextDiv'>
@@ -125,31 +113,18 @@ const ProfilePage = () => {
                         id='contact'
                         name="contact"
                         type="number"
-                        disabled={enable}
+                        disabled={false}
                         {...formik.getFieldProps("contact")}
-                        value={enable === false ? null : loginAuthenticateUser.contact}
                     />
                 </div>
                 <div className='postButton'>
-                    {
-                        enable === true ? <Button
-                            type='submit'
-                            variant="outlined"
-                            color='error'
-                            onClick={handleChangeEdit}
-                            endIcon={<EditIcon />} >
-                            EDIT PROFILE
-                        </Button> : <Button
-                            type='submit'
-                            variant="outlined"
-                            color='error'
-                            onClick={updateProfile}
-                            endIcon={<EditIcon />} >
-                            UPDATE
-                        </Button>
-                    }
-
-
+                    <Button
+                        type='submit'
+                        variant="outlined"
+                        color='error'
+                        endIcon={<EditIcon />} >
+                        EDIT PROFILE
+                    </Button>
                 </div>
             </form>
         </div>

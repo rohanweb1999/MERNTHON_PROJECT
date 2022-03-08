@@ -10,6 +10,7 @@ import Cookies from 'js-cookie'
 import ArticalsPage from './components/ArticalsPage'
 import PageNotFound from './components/PageNotFound'
 import ProfilePage from './components/ProfilePage'
+import ChangePassword from './components/ChangePassword'
 import {
   Route,
   Switch,
@@ -40,6 +41,8 @@ const App = () => {
         <ProtectedRoute exact path="/createBlog" component={CreateBlogPage} authStatus={cookie} />
         <ProtectedRoute exact path="/myBlogs" component={MyBlogPage} authStatus={cookie} />
         <ProtectedRoute exact path="/profile" component={ProfilePage} authStatus={cookie} />
+        <ProtectedRoute exact path="/changepwd" component={ChangePassword} authStatus={cookie} />
+
 
         {
           cookie === undefined || loginStatus === true ? (
