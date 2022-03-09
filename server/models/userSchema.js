@@ -5,41 +5,63 @@ const jwt = require('jsonwebtoken');
 const userSchema = new mongoose.Schema({
     id: {
         type: String,
-        required: true
     },
     firstName: {
         type: String,
-        required: true
     },
     lastName: {
         type: String,
-        required: true
     },
     contact: {
         type: Number,
-        required: true
     },
     userName: {
         type: String,
         unique: true,
-        required: true
     },
     email: {
         type: String,
         unique: true,
-        required: true
     },
     roll: {
         type: String,
-        required: true,
     },
+    bio: {
+        type: String,
+    },
+    genres: [
+        {
+            type: String,
+        }
+    ],
+    NFT: [
+        {
+            title: {
+                type: String,
+            },
+            description: {
+                type: String,
+            },
+            coverImage: {
+                type: String,
+            },
+            audioFile: {
+                type: String,
+            },
+            price: {
+                type: String,
+            },
+            createAt: {
+                type: Date,
+                default: Date.now
+            },
+        }
+    ],
     password: {
         type: String,
-        required: true
     },
     confirmPassword: {
         type: String,
-        required: true
     },
     profilePhoto: [
         {

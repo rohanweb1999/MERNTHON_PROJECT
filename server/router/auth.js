@@ -20,13 +20,21 @@ const path = require('path');
 //register route
 router.post('/signUp', async (req, res) => {
 
-    const userData = req.body
+    const { userData, genres } = req.body
+    console.log("userData", userData);
+    console.log("genres", genres);
+
     try {
-        const userExist = await User.findOne({ email: userData.email })
-        if (userExist) {
+        const usernameExist = await User.findOne({ userName: userData.userName })
+
+        const emailExist = await User.findOne({ email: userData.email })
+        if (emailExist || usernameExist) {
             res.status(400).send({ error: "user Already Exist" })
         } else {
             const result = await User(userData).save();
+
+            await User.updateOne({ userName: userData.userName }, { $push: { genres: genres } });
+
             res.send("Register Sucessfuly")
 
         }
@@ -136,7 +144,7 @@ router.post('/addGenres', authenticate, async (req, res) => {
         res.send("error" + err)
     };
 })
-router.get('/getGenres', authenticate, async (req, res) => {
+router.get('/getGenres', async (req, res) => {
 
     try {
         const page = req.query.Page
@@ -191,6 +199,136 @@ router.put('/updateGenres/:id', async (req, res) => {
     catch (err) {
         res.send("error" + err)
     };
+});
+
+router.get('/getArtistList', async (req, res) => {
+
+    try {
+        const page = req.query.Page
+        let limit = 5
+        let skip = (page - 1) * limit;
+
+        aggregateQuery = [
+            { $match: { "roll": "artist" } },
+            {
+                $skip: skip
+            },
+            {
+                $limit: limit
+            }
+        ]
+        const matchUser = await User.aggregate([{ $match: { "roll": "artist" } }]);
+        let totalPage = Math.ceil(matchUser.length / limit);
+        const artists = await User.aggregate(aggregateQuery)
+        res.send({ artists, totalPage })
+    }
+    catch (err) {
+        res.send("error" + err)
+    };
+})
+
+router.post('/uploadNFT', authenticate, upload.single('image'), async (req, res) => {
+    try {
+
+        const userId = req.query.Id;
+        const { title, description, price } = req.body.values;
+        const audioFile = req.body.AudioFile;
+        const coverImage = req.body.CoverImg;
+
+        const Nft = {
+            title, description, coverImage, audioFile, price
+        }
+        await User.findOneAndUpdate({ _id: userId }, { $push: { NFT: Nft } })
+
+        res.send({ msg: " Audio Nft Created Successfully! " })
+    }
+    catch (err) {
+        //============================= Send Error Message =============================
+        res.send(err)
+    }
+});
+
+//============================= Add Audio Nft Audio File =============================
+
+router.post('/uploadImg', authenticate, upload.single('image'), async (req, res) => {
+    try {
+
+        const file = req.file;
+
+        const type = path.extname(file.originalname);
+
+        if (type !== '.jpg' && type !== '.jpeg' && type !== '.png') {
+            res.status(400).send({ error: 'File Is Not An Image file!' })
+        }
+        else {
+            const uploadFiles = await cloudinary.uploader.upload(file.path, { resource_type: 'auto' });
+
+            const coverImg = uploadFiles.secure_url;
+
+            res.send(coverImg);
+        }
+    }
+    catch (err) {
+        //============================= Send Error Message =============================
+        res.send(err)
+    }
+});
+
+
+//============================= Add Audio Nft =============================
+
+router.post('/uploadAudioFile', authenticate, upload.single('audio'), async (req, res) => {
+
+    try {
+
+
+        const file = req.file;
+
+        const type = path.extname(file.originalname);
+
+        if (type !== '.mp3' && type !== '.wav' && type !== '.sit') {
+
+            res.status(400).send({ error: 'File Is Not An Audio file!' })
+        }
+        else {
+            const uploadFiles = await cloudinary.uploader.upload(file.path, { resource_type: 'auto' });
+
+            const audioFile = uploadFiles.secure_url;
+
+            res.send(audioFile);
+
+        }
+    }
+    catch (err) {
+        //============================= Send Error Message =============================
+        res.send(err)
+    }
+});
+
+router.get('/getNFT', async (req, res) => {
+    try {
+
+        let aggregateQuery = [];
+
+        aggregateQuery.push(
+            {
+                $unwind: "$NFT"
+            },
+            {
+                $sort: {
+                    "NFT.createAt": -1
+                }
+            }
+        );
+
+        const playList = await User.aggregate([aggregateQuery]);
+
+        res.send(playList)
+    }
+    catch (err) {
+        //============================= Send Error Message =============================
+        res.send(err)
+    }
 });
 //////////////////////////// ***********************************/////////////////////////////
 router.post('/uploadProfilePicture/:email', upload.single('profilePicture'), async (req, res) => {

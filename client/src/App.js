@@ -10,6 +10,9 @@ import ProfilePage from './components/ProfilePage'
 import ChangePassword from './components/ChangePassword'
 import ListGenres from './components/AdminListGenres'
 import CreateGenres from './components/CreateGenres'
+import VisitorGenres from './components/VisitorGenres'
+import VisitorViewArtist from './components/VisitorViewArtist'
+import CreateNft from './components/CreateNft'
 import {
   Route,
   Switch,
@@ -31,7 +34,6 @@ const App = () => {
   const toggle = useSelector(state => state.blogUserReducer.toggle)
 
 
-  console.log("toggle", toggle);
   useEffect(() => {
 
     dispatch(getLoginUserDetails())
@@ -43,8 +45,13 @@ const App = () => {
       <Switch>
         <Route exact path='/' component={HomePage} />
         <Route path="/signup" component={SignupPage} />
+        <Route path="/genres" component={VisitorGenres} />
+        <Route path="/listArtists" component={VisitorViewArtist} />
+
+
         <ProtectedRoute exact path="/profile" component={ProfilePage} authStatus={cookie} />
         <ProtectedRoute path="/editgenres/:id" component={CreateGenres} authStatus={cookie} />
+        <ProtectedRoute path="/createNFT" component={CreateNft} authStatus={cookie} />
 
         {
           loginAuthenticateUser.roll === "admin" ?

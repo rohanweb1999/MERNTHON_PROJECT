@@ -1,4 +1,4 @@
-import { ADD_COMMENT, ADD_GENRES, CHECK_EMAIL_EXIST, CREATE_BLOCK, CREATE_BLOG, DELETE_GENRES, DELETE_PERSONAL_BLOG, EDIT_AND_UPDATE_PERSONAL_BLOG, GET_BLOGS_COMMENTS, GET_GENRES, GET_LIKES, GET_LOGIN_USER_DETAILS, GET_PUBLIC_BLOGS, GET_SEARCH_BLOGS, LIKE_BLOG, LOADER, LOGIN_USER, LOGOUT_USER, SEARCH_VALUE, SIGNUP_USER_DATA, UNLIKE_BLOG, UPDATE_GENRES, UPLOAD_ARTICAL_BANNER } from "../actions/Type";
+import { ADD_COMMENT, ADD_GENRES, CHECK_EMAIL_EXIST, CREATE_BLOG, DELETE_GENRES, DELETE_PERSONAL_BLOG, EDIT_AND_UPDATE_PERSONAL_BLOG, GET_ARTIST, GET_BLOGS_COMMENTS, GET_GENRES, GET_LIKES, GET_LOGIN_USER_DETAILS, GET_NFT, GET_PUBLIC_BLOGS, GET_SEARCH_BLOGS, LIKE_BLOG, LOADER, LOGIN_USER, LOGOUT_USER, SEARCH_VALUE, SIGNUP_USER_DATA, UNLIKE_BLOG, UPDATE_GENRES, UPLOAD_ARTICAL_BANNER, UPLOAD_AUDIO_COVERIMAGE, UPLOAD_AUDIO_FILE, UPLOAD_NFT } from "../actions/Type";
 
 /**
  * @author Rohan Gajjar
@@ -14,10 +14,16 @@ const initialState = {
     genres: [],
     like: [],
     page: [],
+    artistList: [],
     blogComments: [],
     likeToggle: false,
     toggle: false,
     search: "",
+    AudioFile: [],
+    CoverImg: [],
+    audioNft: [],
+    ArtistCount: "",
+    GenresCount: ""
 
 
 }
@@ -170,6 +176,44 @@ const blogUserReducer = (state = initialState, action) => {
             return {
                 ...state,
                 toggle: true
+            }
+        }
+        case GET_ARTIST: {
+            return {
+                ...state,
+                artistList: action.payload.artists,
+                page: action.payload.totalPage,
+
+            }
+        }
+        case UPLOAD_AUDIO_FILE: {
+            return {
+                ...state,
+                AudioFile: action.payload
+
+            }
+        }
+        case UPLOAD_AUDIO_COVERIMAGE: {
+            return {
+                ...state,
+                CoverImg: action.payload
+
+            }
+        }
+        case UPLOAD_NFT: {
+            return {
+                ...state,
+                toggle: true,
+                CoverImg: [],
+                AudioFile: []
+
+            }
+        }
+        case GET_NFT: {
+            return {
+                ...state,
+                AudioFile: action.payload
+
             }
         }
         default:

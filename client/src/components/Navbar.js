@@ -14,7 +14,7 @@ import Avatar from '@mui/material/Avatar';
 import { useEffect } from 'react';
 import { useState } from 'react';
 import debounce from 'lodash.debounce';
-import { NavLink, Route, Router, Switch } from 'react-router-dom';
+import { NavLink, Route, Router, Switch, useHistory } from 'react-router-dom';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Tooltip from '@mui/material/Tooltip';
@@ -22,10 +22,10 @@ import Box from '@mui/material/Box';
 
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 const Navbar = () => {
+  const history = useHistory()
   const dispatch = useDispatch();
   const [search, setSearch] = useState("");
 
-  console.log(search, "search");
   const loginStatus = useSelector(state => state.blogUserReducer.loginStatus)
   const loginAuthenticateUser = useSelector(state => state.blogUserReducer.loginAuthenticateUser)
   const cookie = Cookies.get('jwt')
@@ -114,6 +114,7 @@ const Navbar = () => {
   }));
   const classes = useStyles();
   const logout = () => {
+    history.push('/')
     dispatch(userLogout())
   }
   useEffect(() => {
@@ -145,19 +146,42 @@ const Navbar = () => {
               <Typography className={classes.title} variant="h6" noWrap>
                 MyNFT.com
               </Typography>
+              {
+                loginStatus === true ?
+                  (<>
+                    <div className='NavBarButtons'>
+                      <div className='navButton'>
+                        <NavLink to="/"><Button variant="contained" className='MyArticals' color='success'>HOME</Button></NavLink>
+                      </div>
+                      <div className='navButton'>
+                        <NavLink to="/listArtists"><Button variant="contained" className='MyArticals' color='success'>ARTISTS</Button></NavLink>
+                      </div>
+                      <div className='navButton'>
+                        <NavLink to='/genres'><Button variant="contained" className='MyArticals' color='success'>GENRES</Button></NavLink>
+                      </div>
+                    </div>
+                  </>) : null
+              }
+              {
+                loginAuthenticateUser.roll === "artist" ? (
+                  <>
+                    <div className='NavBarButtons'>
+                      <div className='navButton'>
 
-              <div className='NavBarButtons'>
-                <div className='navButton'>
-                  <Button variant="contained" className='MyArticals' color='success'>HOME</Button>
+                        <NavLink to="/"><Button variant="contained" className='MyArticals' color='success'>HOME</Button></NavLink>
+                        <NavLink to="/listArtists"><Button variant="contained" className='MyArticals' color='success'>ARTISTS</Button></NavLink>
+                        <NavLink to='/genres'><Button variant="contained" className='MyArticals' color='success'>GENRES</Button></NavLink>
 
-                </div>
-                <div className='navButton'>
-                  <Button variant="contained" className='MyArticals' color='success'>ARTISTS</Button>
-                </div>
-                <div className='navButton'>
-                  <Button variant="contained" className='MyArticals' color='success'>GENRES</Button>
-                </div>
-              </div>
+                        <NavLink to="/createNFT"><Button variant="contained" className='MyArticals' color='error'>CREATE NFT</Button></NavLink>
+                      </div>
+                    </div>
+
+                  </>)
+                  : null
+
+              }
+
+
               <div className={classes.grow} />
 
               {
@@ -197,18 +221,27 @@ const Navbar = () => {
                       <MenuItem onClick={handleCloseUserMenu}>
                         <div className='menu'>
 
-                          <Typography textAlign="center" >Artists</Typography>
                           {
                             loginAuthenticateUser.roll === "admin" ? (
                               <>
+                                <NavLink to="/"><Typography textAlign="center" >Home</Typography></NavLink>
+                                <NavLink to="/listArtists"><Typography textAlign="center" >Artists</Typography></NavLink>
                                 <Typography textAlign="center" >Dashboard</Typography>
+                                <NavLink to="/admingenres"><Typography textAlign="center" >Genres</Typography></NavLink>
                                 <NavLink to="/changepwd"><Typography textAlign="center" >Change Password</Typography></NavLink>
+                                <NavLink to="/profile"><Typography textAlign="center" >Profile</Typography></NavLink>
+
                               </>)
                               : null
 
                           }
-                          <NavLink to="/admingenres"><Typography textAlign="center" >Genres</Typography></NavLink>
-                          <NavLink to="/profile"><Typography textAlign="center" >Profile</Typography></NavLink>
+                          {
+                            loginAuthenticateUser.roll === "artist" ? (
+                              <>
+                                <NavLink to="/profile"><Typography textAlign="center" >Profile</Typography></NavLink>
+                              </>) : null
+                          }
+
                           <Typography textAlign="center" onClick={logout}>Logout</Typography>
                         </div>
                       </MenuItem>

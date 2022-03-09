@@ -22,6 +22,7 @@ import Avatar from '@mui/material/Avatar';
 import pimg from '../assets/profile.jpeg'
 import { useEffect } from "react";
 import { useHistory } from "react-router-dom";
+import Checkbox from '../components/Checkbox'
 
 /////////////////////////////////////////////////////////////////////////////////////
 /******************Load module End ***********************************************/
@@ -33,14 +34,15 @@ const Input = styled('input')({
 });
 const Signup = () => {
     const [profilePhoto, setProfilePhoto] = useState('');
-    const [roll, setRoll] = useState('');
+    const [genres, setgenres] = useState([]);
+
 
     const validUser = useSelector(state => state.blogUserReducer.validUser)
 
     const dispatch = useDispatch()
     const history = useHistory()
 
-
+    console.log("genres", genres);
     const validationSchema = Yup.object().shape({
         firstName: Yup.string()
             .max(30, 'Must be 30 characters or less')
@@ -60,6 +62,8 @@ const Signup = () => {
             .required('Email is required'),
         roll: Yup.string()
             .required('Required'),
+        bio: Yup.string()
+            .max(500, 'Must be 500 characters or less'),
         password: Yup.string()
             .min(8, 'Password must be at least 8 charaters')
             .required('Password is required')
@@ -80,8 +84,18 @@ const Signup = () => {
         contact: "",
         password: "",
         confirmPassword: "",
-        roll: ""
+        roll: "",
+        bio: ""
     }
+
+
+    const handleClick = (e) => {
+        const { id, checked } = e.target;
+        setgenres([...genres, id]);
+        if (!checked) {
+            setgenres(genres.filter((item) => item !== id));
+        }
+    };
 
     const handleRollChange = (e) => {
         formik.values.roll = e.target.value
@@ -103,8 +117,7 @@ const Signup = () => {
             console.log(values);
             const formData = new FormData();
             formData.append('profilePicture', profilePhoto[0])
-            dispatch(userSignUpData(values))
-
+            dispatch(userSignUpData(values, genres))
             dispatch(profileImageUpload(formData, values.email))
         }
     });
@@ -212,16 +225,10 @@ const Signup = () => {
                     ) : null}
 
 
-                    {formik.touched.contact && formik.errors.contact ? (
-                        <div className="fv-plugins-message-container">
-                            <div className="fv-help-block error">
-                                {formik.errors.contact}
-                            </div>
-                        </div>
-                    ) : null}
+
                     <select name="roll"
                         onChange={(e) => handleRollChange(e)}>
-                        <option value="">Select Roll</option>
+                        <option value="">Select Role</option>
                         <option value="admin">Admin</option>
                         <option value="artist">Artist</option>
 
@@ -233,6 +240,78 @@ const Signup = () => {
                             </div>
                         </div>
                     ) : null}
+
+                    <TextField
+                        label="Bio"
+                        variant="standard"
+                        name="bio"
+                        type="text"
+
+                        {...formik.getFieldProps("bio")}
+                    />
+                    {formik.touched.bio && formik.errors.bio ? (
+                        <div className="fv-plugins-message-container">
+                            <div className="fv-help-block error">
+                                {formik.errors.bio}
+                            </div>
+                        </div>
+                    ) : null}
+                    <label>Select Genres</label>
+
+                    <div className="checkboxMainDiv">
+
+                        <div className="checkBoxsubDiv">
+                            <Checkbox
+                                type='checkbox'
+                                id={'Blues'}
+                                handleClick={handleClick}
+                                isChecked={genres.includes('Blues')} />
+                            <label>Blues</label>
+
+                        </div>
+                        <div className="checkBoxsubDiv">
+                            <Checkbox
+                                type='checkbox'
+                                id={'Country Music'}
+                                handleClick={handleClick}
+                                isChecked={genres.includes('Country Music')} />
+                            <label>Country Music</label>
+
+                        </div>
+                        <div className="checkBoxsubDiv">
+                            <Checkbox
+                                type='checkbox'
+                                id={'Hip Hop Music'}
+                                handleClick={handleClick}
+                                isChecked={genres.includes('Hip Hop Music')} />
+                            <label>Hip Hop Music</label>
+
+                        </div>
+                        <div className="checkBoxsubDiv">
+                            <Checkbox
+                                type='checkbox'
+                                id={'Jazz'}
+                                handleClick={handleClick}
+                                isChecked={genres.includes('Jazz')} />
+                            <label>Jazz</label>
+                        </div>
+                        <div className="checkBoxsubDiv">
+                            <Checkbox
+                                type='checkbox'
+                                id={'Rock & Roll Music'}
+                                handleClick={handleClick}
+                                isChecked={genres.includes('Rock & Roll Music')} />
+                            <label>Rock & Roll Music</label>
+                        </div>
+                        <div className="checkBoxsubDiv">
+                            <Checkbox
+                                type='checkbox'
+                                id={'Soul Music'}
+                                handleClick={handleClick}
+                                isChecked={genres.includes('Soul Music')} />
+                            <label>Soul Music</label>
+                        </div>
+                    </div>
                     <TextField
                         label="Password"
                         variant="standard"

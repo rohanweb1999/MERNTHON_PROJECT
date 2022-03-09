@@ -6,14 +6,14 @@ import Axios from 'axios';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { bindActionCreators } from 'redux';
-import { ADD_COMMENT, ADD_GENRES, CHANGE_PASSWORD, CHECK_EMAIL_EXIST, CREATE_BLOCK, CREATE_BLOG, DELETE_GENRES, DELETE_PERSONAL_BLOG, EDIT_AND_UPDATE_PERSONAL_BLOG, GET_BLOGS_COMMENTS, GET_GENRES, GET_LIKES, GET_LOGIN_USER_DETAILS, GET_PUBLIC_BLOGS, GET_SEARCH_BLOGS, LIKE_BLOG, LOADER, LOGIN_USER, LOGOUT_USER, SEARCH_VALUE, SIGNUP_USER_DATA, UNLIKE_BLOG, UPDATE_GENRES, UPDATE_USER_PROFILE, UPLOAD_ARTICAL_BANNER, UPLOAD_PROFILE_PICTURE } from './Type';
+import { ADD_COMMENT, ADD_GENRES, CHANGE_PASSWORD, CHECK_EMAIL_EXIST, CREATE_BLOCK, CREATE_BLOG, DELETE_GENRES, DELETE_PERSONAL_BLOG, EDIT_AND_UPDATE_PERSONAL_BLOG, GET_ARTIST, GET_BLOGS_COMMENTS, GET_GENRES, GET_LIKES, GET_LOGIN_USER_DETAILS, GET_NFT, GET_PUBLIC_BLOGS, GET_SEARCH_BLOGS, LIKE_BLOG, LOADER, LOGIN_USER, LOGOUT_USER, SEARCH_VALUE, SIGNUP_USER_DATA, UNLIKE_BLOG, UPDATE_GENRES, UPDATE_USER_PROFILE, UPLOAD_ARTICAL_BANNER, UPLOAD_AUDIO_COVERIMAGE, UPLOAD_AUDIO_FILE, UPLOAD_NFT, UPLOAD_PROFILE_PICTURE } from './Type';
 toast.configure()
 ///////////////////// load modules end ///////////////////////////////////////
 
 
-export const userSignUpData = (userData) => {
+export const userSignUpData = (userData, genres) => {
     return (dispatch) => {
-        Axios.post('/signUp', userData)
+        Axios.post('/signUp', { userData, genres })
             .then((res) => {
                 const result = res.data
                 toast.success(result, { position: toast.POSITION.TOP_CENTER, autoClose: 2000 });
@@ -127,6 +127,82 @@ export const updateGenres = (id, data) => {
     )
 }
 
+export const getArtistList = (pageNumber) => {
+    return (dispatch) => {
+        Axios.get(`/getArtistList/?Page=${pageNumber}`)
+            .then((res) => {
+
+                dispatch({ type: GET_ARTIST, payload: res.data })
+            })
+            .catch(err => {
+                toast.error("Failed", { position: toast.POSITION.TOP_CENTER, autoClose: 2000 })
+
+            })
+    }
+}
+
+export const uploadCoverImg = (values) => {
+
+    return (dispatch) => {
+
+        Axios.post(`/uploadImg`, values)
+            .then((res) => {
+                dispatch({ type: UPLOAD_AUDIO_COVERIMAGE, payload: res.data })
+            })
+            .catch(error => {
+
+                toast.error("File Is Not An Image file!", { position: toast.POSITION.TOP_CENTER, autoClose: 2000 });
+
+            })
+    }
+}
+
+
+export const uploadAudioFile = (values) => {
+
+    return (dispatch) => {
+
+        Axios.post(`/uploadAudioFile`, values)
+            .then((res) => {
+                dispatch({ type: UPLOAD_AUDIO_FILE, payload: res.data })
+            })
+            .catch(err => {
+                toast.error("File Is Not An Audio file!", { position: toast.POSITION.TOP_CENTER, autoClose: 2000 });
+
+            })
+    }
+}
+
+export const uploadNFT = (userId, values, AudioFile, CoverImg) => {
+
+    return (dispatch) => {
+
+        Axios.post(`/uploadNFT/?Id=${userId}`, { values, AudioFile, CoverImg })
+            .then((res) => {
+                toast.success(`${res.data.msg}`, { position: toast.POSITION.TOP_CENTER, autoClose: 2000 });
+                dispatch({ type: UPLOAD_NFT })
+            })
+            .catch(err => {
+
+                toast.error("Nft Title Is Already Exist!", { position: toast.POSITION.TOP_CENTER, autoClose: 2000 });
+
+            })
+    }
+}
+
+export const getNFT = () => {
+
+    return (dispatch) => {
+        Axios.get(`/getNFT`)
+            .then((res) => {
+                dispatch({ type: GET_NFT, payload: res.data })
+            })
+            .catch(err => {
+                console.log(err);
+            })
+    }
+}
+
 export const profileImageUpload = (profilePicture, email) => {
     return (
         (dispatch) => {
@@ -207,7 +283,6 @@ export const uploadArticalBanner = (articalBanner) => {
             Axios.post(`/uploadArticalBanner`, articalBanner)
                 .then((res) => {
                     dispatch({ type: UPLOAD_ARTICAL_BANNER, payload: res.data })
-                    // toast.success(, { position: toast.POSITION.TOP_CENTER, autoClose: 2000 })
 
                 })
                 .catch(err => {
@@ -323,6 +398,8 @@ export const getBlogsComments = () => {
             })
     }
 }
+
+
 
 export const getSearchBlogs = (SearchValue) => {
 
