@@ -31,6 +31,7 @@ const HomePage = () => {
                         AudioFile && AudioFile.map((items => {
                             return (
                                 <>
+
                                     <Card sx={{ maxWidth: 345 }} className='NFTBox'>
                                         <CardMedia
                                             component="img"
@@ -39,11 +40,16 @@ const HomePage = () => {
                                             image={items.NFT.coverImage}
                                         />
                                         <CardContent>
-                                            <Typography gutterBottom variant="h5" component="div">
+                                            <Typography
+                                                gutterBottom
+                                                variant="h5"
+                                                id='nfttitle'
+                                                component="div">
                                                 {items.NFT.title}
+                                                <h6 id='nftUserName'>{items.NFT.price} ETH</h6>
                                             </Typography>
 
-                                            <h6 id='nftUserName'>@{items.userName}</h6>
+                                            <h6 id='nftUserName'>By:- @{items.userName}</h6>
                                         </CardContent>
                                     </Card>
                                 </>

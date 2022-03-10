@@ -225,8 +225,8 @@ const Navbar = () => {
                             loginAuthenticateUser.roll === "admin" ? (
                               <>
                                 <NavLink to="/"><Typography textAlign="center" >Home</Typography></NavLink>
-                                <NavLink to="/listArtists"><Typography textAlign="center" >Artists</Typography></NavLink>
-                                <Typography textAlign="center" >Dashboard</Typography>
+                                <NavLink to="/ppArtistList"><Typography textAlign="center" >Artists</Typography></NavLink>
+                                <NavLink to="/dashboard"><Typography textAlign="center" >Dashboard</Typography></NavLink>
                                 <NavLink to="/admingenres"><Typography textAlign="center" >Genres</Typography></NavLink>
                                 <NavLink to="/changepwd"><Typography textAlign="center" >Change Password</Typography></NavLink>
                                 <NavLink to="/profile"><Typography textAlign="center" >Profile</Typography></NavLink>
@@ -242,7 +242,7 @@ const Navbar = () => {
                               </>) : null
                           }
 
-                          <Typography textAlign="center" onClick={logout}>Logout</Typography>
+                          <Button type='submit' variant="contained" color='error' onClick={logout}>Logout</Button>
                         </div>
                       </MenuItem>
 

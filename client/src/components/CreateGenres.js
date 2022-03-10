@@ -62,11 +62,7 @@ const CreateGenres = () => {
             seteditedData(editGenresData);
         }
     }, [id]);
-    useEffect(() => {
-        if (toggle === true) {
-            history.push('/genres');
-        }
-    }, [toggle]);
+
     return (
 
         <div className='mainWrapper'>

@@ -168,6 +168,7 @@ code {
   margin: auto;
   display: grid;
   position: relative;
+  box-shadow: -1px 1px 20px 0px black;
 }
 .css-1ri6ub7-MuiPaper-root-MuiCard-root {
   box-shadow: 0px 2px 1px -1px rgb(0 0 0 / 20%),
@@ -385,4 +386,15 @@ input[type="checkbox" i] {
   margin: auto;
   display: grid;
   position: relative;
+  box-shadow: 0 0 20px 2px rgba(0, 0, 0, 0.4);
+}
+#nfttitle {
+  display: flex;
+}
+#nftUserName {
+  font-size: small;
+  margin-left: 15px;
+}
+#dashboard {
+  margin-left: 50%;
 }

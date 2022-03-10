@@ -21,6 +21,8 @@ import { useHistory } from "react-router-dom";
 import bg from '../assets/bg.jpg'
 import PublishIcon from '@mui/icons-material/Publish';
 import { uploadAudioFile, uploadCoverImg, uploadNFT } from "../actions";
+import Box from '@mui/material/Box';
+import LinearProgress from '@mui/material/LinearProgress';
 
 /////////////////////////////////////////////////////////////////////////////////////
 /******************Load module End ***********************************************/
@@ -42,6 +44,8 @@ const CreateNft = () => {
     const loginAuthenticateUser = useSelector(state => state.blogUserReducer.loginAuthenticateUser)
     const AudioFile = useSelector(state => state.blogUserReducer.AudioFile)
     const CoverImg = useSelector(state => state.blogUserReducer.CoverImg)
+    const loader = useSelector(state => state.blogUserReducer.loader)
+    const toggle = useSelector(state => state.blogUserReducer.toggle)
 
     console.log("audio", audio);
     console.log("values", values);
@@ -97,11 +101,25 @@ const CreateNft = () => {
             setValues('')
         }
     }, [AudioFile, CoverImg]);
+    useEffect(() => {
+        if (toggle === true) {
+            history.push('/genres');
+        }
+    }, [toggle]);
     return (
         <>
             <div>
                 <img className='signupImg' src={bg} alt='jpg'></img>
             </div>
+            {
+                loader ? (
+                    <>
+                        <Box sx={{ width: '100%' }}>
+                            <LinearProgress />
+                        </Box>
+                    </>
+                ) : null
+            }
             <div className="loginBox">
 
                 <form className="signupUser" onSubmit={formik.handleSubmit}>
@@ -171,6 +189,8 @@ const CreateNft = () => {
                             <Button
                                 type='submit'
                                 variant="contained" color="success"
+                                disabled={loader}
+
                                 endIcon={<PublishIcon />} >
                                 PUBLISH
                             </Button>

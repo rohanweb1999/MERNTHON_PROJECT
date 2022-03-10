@@ -229,7 +229,6 @@ const Signup = () => {
                     <select name="roll"
                         onChange={(e) => handleRollChange(e)}>
                         <option value="">Select Role</option>
-                        <option value="admin">Admin</option>
                         <option value="artist">Artist</option>
 
                     </select>

@@ -148,18 +148,37 @@ router.get('/getGenres', async (req, res) => {
 
     try {
         const page = req.query.Page
+        const search = req.query.Request
         let limit = 5
         let skip = (page - 1) * limit;
 
-        aggregateQuery = [
-            { $sort: { title: 1 } },
-            {
-                $skip: skip
-            },
-            {
-                $limit: limit
-            }
-        ]
+        aggregateQuery = []
+        if (search === "") {
+            aggregateQuery.push(
+                { $sort: { title: 1 } },
+                {
+                    $skip: skip
+                },
+                {
+                    $limit: limit
+                }
+            )
+        } else if (search !== "") {
+            aggregateQuery.push(
+                {
+                    $match: { "title": new RegExp("^" + search, 'i') },
+
+                },
+
+                {
+                    $skip: skip
+                },
+                {
+                    $limit: limit
+                }
+            )
+        }
+
         const matchUser = await Genres.aggregate([{ $sort: { title: 1 } }]);
         let totalPage = Math.ceil(matchUser.length / limit);
         const genres = await Genres.aggregate(aggregateQuery)
@@ -205,18 +224,48 @@ router.get('/getArtistList', async (req, res) => {
 
     try {
         const page = req.query.Page
+        const search = req.query.Request
         let limit = 5
         let skip = (page - 1) * limit;
 
-        aggregateQuery = [
+        aggregateQuery = []
+
+        aggregateQuery.push(
             { $match: { "roll": "artist" } },
-            {
-                $skip: skip
-            },
-            {
-                $limit: limit
-            }
-        ]
+        )
+
+        if (search === "") {
+            aggregateQuery.push(
+
+                {
+                    $skip: skip
+                },
+                {
+                    $limit: limit
+                }
+            )
+        } else if (search !== "") {
+            aggregateQuery.push(
+                {
+                    $match: {
+                        $or: [
+                            { "userName": new RegExp("^" + search, 'i') },
+                            { "email": new RegExp(search, 'i') },
+
+                        ]
+                    },
+                },
+                {
+                    $skip: skip
+                },
+                {
+                    $limit: limit
+                }
+            )
+
+
+        }
+
         const matchUser = await User.aggregate([{ $match: { "roll": "artist" } }]);
         let totalPage = Math.ceil(matchUser.length / limit);
         const artists = await User.aggregate(aggregateQuery)
@@ -324,6 +373,33 @@ router.get('/getNFT', async (req, res) => {
         const playList = await User.aggregate([aggregateQuery]);
 
         res.send(playList)
+    }
+    catch (err) {
+        //============================= Send Error Message =============================
+        res.send(err)
+    }
+});
+
+router.get('/getArtistAndGenresCount', authenticate, async (req, res) => {
+    try {
+        const aggregateQuery = [];
+
+        aggregateQuery.push(
+            {
+                $match: {
+                    roll: "artist"
+                }
+            }
+        )
+
+        const artists = await User.aggregate([aggregateQuery]);
+
+        const ArtistCount = artists.length;
+
+        const genres = await Genres.find();
+        const GenresCount = genres.length;
+
+        res.send({ ArtistCount, GenresCount });
     }
     catch (err) {
         //============================= Send Error Message =============================

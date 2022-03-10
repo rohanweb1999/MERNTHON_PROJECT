@@ -1,12 +1,12 @@
-import { Button } from '@mui/material'
-import React, { useEffect, useState } from 'react'
+import React from 'react'
+import { useState } from 'react'
+import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { NavLink } from 'react-router-dom'
-import { deleteGenres, getGenres, getLoginUserDetails } from '../actions'
-import genresBg from '../assets/genres.jpg';
+import { getArtistList } from '../actions'
 import Pagination from '@mui/material/Pagination';
-
-
+import Avatar from '@mui/material/Avatar';
+import Chip from '@mui/material/Chip';
+import Bg from '../assets/bg.jpg'
 import { alpha, makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -15,23 +15,17 @@ import Typography from '@material-ui/core/Typography';
 import InputBase from '@material-ui/core/InputBase';
 import SearchIcon from '@material-ui/icons/Search';
 import debounce from 'lodash.debounce';
-const ListGenres = () => {
-
-    const dispatch = useDispatch()
+import MailOutlineIcon from '@mui/icons-material/MailOutline';
+const AdminViewArtist = () => {
     const [pageNumber, setpageNumber] = useState(1)
     const [search, setSearch] = useState("");
 
-    const genres = useSelector(state => state.blogUserReducer.genres)
+
     const page = useSelector(state => state.blogUserReducer.page)
-    const toggle = useSelector(state => state.blogUserReducer.toggle)
-
-    console.log("genres", genres);
-
-    const handleDelete = (id) => {
-        dispatch(deleteGenres(id))
-    }
+    const artistList = useSelector(state => state.blogUserReducer.artistList)
 
 
+    const dispatch = useDispatch()
     const useStyles = makeStyles((theme) => ({
         grow: {
             flexGrow: 1,
@@ -97,49 +91,65 @@ const ListGenres = () => {
     }));
     const classes = useStyles();
     const onchangeChandler = event => {
+        console.log(event.target.value);
         setSearch(event.target.value)
     }
     const debouncedOnChange = debounce(onchangeChandler, 500)
+    const openNewTab = (userName) => {
+
+        window.location.href = `http://MyNFT.com/artist/${userName}`
+
+    }
     useEffect(() => {
-        dispatch(getGenres(pageNumber, search))
-    }, [pageNumber, toggle, search])
+        dispatch(getArtistList(pageNumber, search))
+    }, [pageNumber, search])
     return (
         <div className='listGenresMainDiv'>
-
-            <div className='slide-image'>
-                <img className='HomeImg' src={genresBg} alt='jpg'></img>
-                <NavLink to="/createGenres"><Button variant="contained" color="error">Add Genres</Button></NavLink>
-                <div className={classes.search}>
-                    <div className={classes.searchIcon}>
-                        <SearchIcon />
-                    </div>
-                    <InputBase
-                        placeholder="Search…"
-                        onChange={debouncedOnChange}
-                        classes={{
-                            root: classes.inputRoot,
-                            input: classes.inputInput,
-                        }}
-                        inputProps={{ 'aria-label': 'search' }}
-                    />
+            <div className={classes.search}>
+                <div className={classes.searchIcon}>
+                    <SearchIcon />
                 </div>
+                <InputBase
+                    placeholder="Search…"
+                    onChange={debouncedOnChange}
+                    classes={{
+                        root: classes.inputRoot,
+                        input: classes.inputInput,
+                    }}
+                    inputProps={{ 'aria-label': 'search' }}
+                />
+            </div>
+            <div className='slide-image'>
+
                 <div className='mainCardDiv'>
                     {
-                        genres && genres.map((list) => {
+                        artistList && artistList.map((list) => {
                             return (
                                 <>
+                                    <div className='cardBox' onClick={() => openNewTab(list.userName)}>
+                                        <div className='ArtistView'>
+                                            <Avatar alt="Remy Sharp" id="profileImg" src={list.profilePhoto ? list.profilePhoto : "/broken-image.jpg"} />
+                                            <h6 id='artistUsername'>@{list.userName}</h6>
+                                        </div>
 
-                                    <div className='cardBox'>
                                         <div>
-                                            <h3>{list.title}</h3>
+                                            <h6>{list.bio}</h6>
                                         </div>
-                                        <div>
-                                            <p>{list.description}</p>
+                                        <h6 id='artistUsername'><MailOutlineIcon />{list.email}</h6>
+
+                                        <div >
+                                            {
+                                                list && list.genres.map((items => {
+                                                    return <Chip
+                                                        id='listGenresNames'
+                                                        label={items}
+                                                        variant="outlined" />
+
+                                                }))
+                                            }
+
                                         </div>
-                                        <div className='EditDeleteButton'>
-                                            <NavLink to={`/editgenres/:?id=${list._id}`}><Button variant="contained" color="success" >Edit </Button></NavLink>
-                                            <Button type='submit' variant="contained" color='error' onClick={() => handleDelete(list._id)}>Delete  </Button>
-                                        </div>
+
                                     </div>
                                 </>
                             )
@@ -160,5 +170,4 @@ const ListGenres = () => {
     )
 }
 
-export default ListGenres
-
+export default AdminViewArtist

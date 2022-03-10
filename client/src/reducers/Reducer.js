@@ -1,4 +1,4 @@
-import { ADD_COMMENT, ADD_GENRES, CHECK_EMAIL_EXIST, CREATE_BLOG, DELETE_GENRES, DELETE_PERSONAL_BLOG, EDIT_AND_UPDATE_PERSONAL_BLOG, GET_ARTIST, GET_BLOGS_COMMENTS, GET_GENRES, GET_LIKES, GET_LOGIN_USER_DETAILS, GET_NFT, GET_PUBLIC_BLOGS, GET_SEARCH_BLOGS, LIKE_BLOG, LOADER, LOGIN_USER, LOGOUT_USER, SEARCH_VALUE, SIGNUP_USER_DATA, UNLIKE_BLOG, UPDATE_GENRES, UPLOAD_ARTICAL_BANNER, UPLOAD_AUDIO_COVERIMAGE, UPLOAD_AUDIO_FILE, UPLOAD_NFT } from "../actions/Type";
+import { ADD_COMMENT, ADD_GENRES, CHECK_EMAIL_EXIST, CREATE_BLOG, DELETE_GENRES, DELETE_PERSONAL_BLOG, EDIT_AND_UPDATE_PERSONAL_BLOG, GET_ARTIST, GET_ARTIST_AND_GENRES_COUNT, GET_BLOGS_COMMENTS, GET_GENRES, GET_LIKES, GET_LOGIN_USER_DETAILS, GET_NFT, GET_PUBLIC_BLOGS, GET_SEARCH_BLOGS, LIKE_BLOG, LOADER, LOGIN_USER, LOGOUT_USER, SEARCH_VALUE, SIGNUP_USER_DATA, UNLIKE_BLOG, UPDATE_GENRES, UPLOAD_ARTICAL_BANNER, UPLOAD_AUDIO_COVERIMAGE, UPLOAD_AUDIO_FILE, UPLOAD_NFT } from "../actions/Type";
 
 /**
  * @author Rohan Gajjar
@@ -189,23 +189,26 @@ const blogUserReducer = (state = initialState, action) => {
         case UPLOAD_AUDIO_FILE: {
             return {
                 ...state,
-                AudioFile: action.payload
+                AudioFile: action.payload,
+                loader: true
 
             }
         }
         case UPLOAD_AUDIO_COVERIMAGE: {
             return {
                 ...state,
-                CoverImg: action.payload
+                CoverImg: action.payload,
+                loader: true
 
             }
         }
         case UPLOAD_NFT: {
             return {
                 ...state,
-                toggle: true,
+                loader: false,
                 CoverImg: [],
-                AudioFile: []
+                AudioFile: [],
+
 
             }
         }
@@ -213,6 +216,14 @@ const blogUserReducer = (state = initialState, action) => {
             return {
                 ...state,
                 AudioFile: action.payload
+
+            }
+        }
+        case GET_ARTIST_AND_GENRES_COUNT: {
+            return {
+                ...state,
+                ArtistCount: action.payload.ArtistCount,
+                GenresCount: action.payload.GenresCount
 
             }
         }
